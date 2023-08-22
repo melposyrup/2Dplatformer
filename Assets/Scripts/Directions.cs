@@ -13,6 +13,10 @@ public class Directions : MonoBehaviour
 	RaycastHit2D[] wallHits = new RaycastHit2D[5];
 	RaycastHit2D[] ceilingHits = new RaycastHit2D[5];
 
+	float onStairDownDistance = 1f;
+	RaycastHit2D[] onStairHits = new RaycastHit2D[5];
+
+
 	private Vector2 wallDirection => gameObject.transform.localScale.x > 0 ? Vector2.right : Vector2.left;
 
 	[SerializeField]
@@ -47,6 +51,13 @@ public class Directions : MonoBehaviour
 		private set { _isOnCeiling = value; }
 	}
 
+	[SerializeField]
+	private bool _onStair;
+	public bool OnStair
+	{
+		get { return _onStair; }
+		private set { _onStair = value; }
+	}
 
 
 	CapsuleCollider2D col;
@@ -56,18 +67,15 @@ public class Directions : MonoBehaviour
 		col = GetComponent<CapsuleCollider2D>();
 		animator = GetComponent<Animator>();
 	}
-	public Vector2 facing(Vector2 moveInput, Transform transform)
-	{
-		if (moveInput.x > 0 && transform.localScale.x < 0) { return new Vector2(-1, 1); }
-		else if (moveInput.x < 0 && transform.localScale.x > 0) { return new Vector2(-1, 1); }
-		return new Vector2(1, 1);
-	}
+
 
 	private void FixedUpdate()
 	{
 		IsGrounded = col.Cast(Vector2.down, contactFilter, groundHits, groundDistance) > 0;
 		IsOnWall = col.Cast(wallDirection, contactFilter, wallHits, wallDistance) > 0;
 		IsOnCeiling = col.Cast(Vector2.up, contactFilter, ceilingHits, ceilingDistance) > 0;
+
+		OnStair = col.Cast(Vector2.down, contactFilter, onStairHits, onStairDownDistance) > 0 && IsOnWall;
 
 	}
 
