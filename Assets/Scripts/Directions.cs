@@ -6,9 +6,9 @@ using UnityEngine;
 public class Directions : MonoBehaviour
 {
 	public ContactFilter2D contactFilter;
-	public float groundDistance = 0.05f;
-	public float wallDistance = 0.05f;
-	public float ceilingDistance = 0.05f;
+	float groundDistance = 0.05f;
+	float wallDistance = 0.1f;
+	float ceilingDistance = 0.05f;
 	RaycastHit2D[] groundHits = new RaycastHit2D[5];
 	RaycastHit2D[] wallHits = new RaycastHit2D[5];
 	RaycastHit2D[] ceilingHits = new RaycastHit2D[5];
@@ -17,7 +17,7 @@ public class Directions : MonoBehaviour
 	RaycastHit2D[] onStairHits = new RaycastHit2D[5];
 
 
-	private Vector2 wallDirection => gameObject.transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+	public Vector2 wallDirection => rb.velocity.x > 0 ? Vector2.right : Vector2.left;
 
 	[SerializeField]
 	private bool _isGrounded;
@@ -36,8 +36,8 @@ public class Directions : MonoBehaviour
 	public bool IsOnWall
 	{
 		get { return _isOnWall; }
-		private set 
-		{ 
+		private set
+		{
 			_isOnWall = value;
 			animator.SetBool(AnimStrings.isOnWall, value);
 		}
@@ -59,15 +59,15 @@ public class Directions : MonoBehaviour
 		private set { _onStair = value; }
 	}
 
-
 	CapsuleCollider2D col;
 	Animator animator;
+	Rigidbody2D rb;
 	private void Awake()
 	{
 		col = GetComponent<CapsuleCollider2D>();
 		animator = GetComponent<Animator>();
+		rb = GetComponent<Rigidbody2D>();
 	}
-
 
 	private void FixedUpdate()
 	{

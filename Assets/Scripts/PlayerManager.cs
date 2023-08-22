@@ -37,11 +37,21 @@ public class PlayerManager : MonoBehaviour
 		}
 	}
 
+	public bool CanMove
+	{
+		get { return animator.GetBool(AnimStrings.canMove); }
+	}
+	public bool IsAlive
+	{
+		get { return animator.GetBool(AnimStrings.isAlive); }
+	}
+
 
 	public Vector2 CurrentSpeed
 	{
 		get
 		{
+			if (!CanMove) { return Vector2.zero; }
 			if (IsWalking)
 			{
 				if (IsRunning) { return new Vector2(moveInput.x * runSpeed, rb.velocity.y); }
@@ -54,12 +64,13 @@ public class PlayerManager : MonoBehaviour
 	Rigidbody2D rb;
 	Animator animator;
 	Directions directions;
-
+	PlayerInput playerInput;
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 		directions = GetComponent<Directions>();
+		playerInput = GetComponent<PlayerInput>();
 	}
 	public void OnMove(InputAction.CallbackContext context)
 	{
@@ -82,12 +93,21 @@ public class PlayerManager : MonoBehaviour
 		{
 			if (directions.IsGrounded || directions.IsOnWall)
 			{
-				animator.SetTrigger(AnimStrings.jump);
+				animator.SetTrigger(AnimStrings.jumpTrigger);
 				rb.velocity = new Vector2(rb.velocity.x, jumpImpulse);
 				jumpCount++;
 			}
 		}
 	}
+
+	public void OnAttack(InputAction.CallbackContext context)
+	{
+		if (context.started)
+		{
+			animator.SetTrigger(AnimStrings.attackTrigger);
+		}
+	}
+
 	protected Vector2 facing(Vector2 moveInput, Transform transform)
 	{
 		if (moveInput.x > 0 && transform.localScale.x < 0) { return new Vector2(-1, 1); }
@@ -99,9 +119,15 @@ public class PlayerManager : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		if (!IsAlive)
+		{
+			playerInput.enabled = false;
+			//TODO GameOverAnim() with SceneChange
+		}
+		else { playerInput.enabled = true; }
 		rb.velocity = CurrentSpeed;
 		animator.SetFloat(AnimStrings.yVelocity, rb.velocity.y);
-		if (!directions.OnStair) { rb.sharedMaterial = MaterialFriction10;}
+		if (!directions.OnStair) { rb.sharedMaterial = MaterialFriction10; }
 		else { rb.sharedMaterial = MaterialFriction0; }
 	}
 }

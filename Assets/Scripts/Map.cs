@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class Map : MonoBehaviour
 {
 	[Header("Map Settings")]
-	[SerializeField] GameObject Player;
+	[SerializeField] GameObject player;
 	[SerializeField] float mapWidth;
 	[SerializeField] int mapNums = 3;
 	[SerializeField] float totalWidth;
@@ -15,39 +16,39 @@ public class Map : MonoBehaviour
 
 	private void Awake()
 	{
-		Player = GameObject.FindGameObjectWithTag("Player");
+		player = GameObject.FindGameObjectWithTag("Player");
 		mapWidth = GetComponent<SpriteRenderer>().sprite.bounds.size.x;
 	}
 
 	private void Start()
 	{
 		totalWidth = mapWidth * mapNums;
-		lastPos = Player.transform.position;
-		lastPosPlayer = Player.transform.position;
+		lastPos = player.transform.position;
+		lastPosPlayer = player.transform.position;
 	}
 
 	private void FixedUpdate()
 	{
 		Vector2 MoveAmount = new Vector2(
-			Player.transform.position.x - lastPosPlayer.x,
-			Player.transform.position.y - lastPosPlayer.y);
+			player.transform.position.x - lastPosPlayer.x,
+			player.transform.position.y - lastPosPlayer.y);
 
 		transform.position += new Vector3(MoveAmount.x * fraction, MoveAmount.y * fraction, 0f);
 
 		Vector3 tempPosition = transform.position;
-		if (Player.transform.position.x > transform.position.x + totalWidth / 2)
+		if (player.transform.position.x > transform.position.x + totalWidth / 2)
 		{
 			tempPosition.x += totalWidth;
 			transform.position = tempPosition;
 		}
-		else if (Player.transform.position.x < transform.position.x - totalWidth / 2)
+		else if (player.transform.position.x < transform.position.x - totalWidth / 2)
 		{
 			tempPosition.x -= totalWidth;
 			transform.position = tempPosition;
 		}
 
 		lastPos = transform.position;
-		lastPosPlayer = Player.transform.position;
+		lastPosPlayer = player.transform.position;
 	}
 
 }
