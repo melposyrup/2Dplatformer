@@ -90,4 +90,5 @@ public class Hyena : MonoBehaviour
 		if (directions.IsGrounded) { FlipDirection(); }
 	}
 
+
 }

@@ -52,7 +52,7 @@ public class PlayerManager : MonoBehaviour
 	{
 		get
 		{
-			if (!CanMove) { return Vector2.zero; }
+			if (!CanMove) { return new Vector2(0, rb.velocity.y); }
 			if (IsWalking)
 			{
 				if (IsRunning) { return new Vector2(moveInput.x * runSpeed, rb.velocity.y); }

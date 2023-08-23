@@ -9,15 +9,15 @@ public class Damageable : MonoBehaviour
 
 
 
-	[SerializeField] private float _maxHealth = 100f;
-	public float MaxHealth
+	[SerializeField] private int _maxHealth = 100;
+	public int MaxHealth
 	{
 		get { return _maxHealth; }
 		set { _maxHealth = value; }
 	}
 
-	[SerializeField] private float _health = 100f;
-	public float Health
+	[SerializeField] private int _health = 100;
+	public int Health
 	{
 		get { return _health; }
 		set
@@ -95,7 +95,18 @@ public class Damageable : MonoBehaviour
 		return false;
 	}
 
-
+	public bool Heal(int healthRestore)
+	{
+		if (IsAlive && (Health < MaxHealth))
+		{
+			int maxHeal = Mathf.Max(MaxHealth - Health, 0);
+			int actualHeal = Mathf.Min(maxHeal, healthRestore);
+			Health += actualHeal;
+			CharacterEvents.characterHealed.Invoke(gameObject, actualHeal);
+			return true;
+		}
+		return false;
+	}
 
 
 

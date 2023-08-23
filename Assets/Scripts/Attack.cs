@@ -22,7 +22,7 @@ public class Attack : MonoBehaviour
 		{
 			if (transform.parent.localScale.x < 0) { knockback *= new Vector2(-1, 1); }
 			bool gotHit = damageable.Hit(attackDamage, knockback);
-			if (gotHit) { Debug.Log(collision.name + "hit for " + attackDamage); }
+			//if (gotHit) { Debug.Log(collision.name + "hit for " + attackDamage); }
 		}
 
 
