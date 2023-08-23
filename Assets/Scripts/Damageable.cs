@@ -59,26 +59,6 @@ public class Damageable : MonoBehaviour
 		animator = GetComponent<Animator>();
 	}
 
-	// Return whether the damageable took damage or not
-	public bool Hit(int damage, Vector2 knockback)
-	{
-		if (_isAlive && !isInvincible)
-		{
-			Health -= damage;
-			isInvincible = true;
-
-			// Notify other subscribed components that the damageble was hit to handle the knockback
-			animator.SetTrigger(AnimStrings.hitTrigger);
-			LockVelocity = true;
-			damageableHit?.Invoke(damage, knockback);
-
-			return true;
-		}
-
-		// Unable to be hit
-		return false;
-	}
-
 	private void Update()
 	{
 		if (isInvincible)
@@ -93,6 +73,29 @@ public class Damageable : MonoBehaviour
 
 		//Hit(5);
 	}
+
+	// Return whether the damageable took damage or not
+	public bool Hit(int damage, Vector2 knockback)
+	{
+		if (_isAlive && !isInvincible)
+		{
+			Health -= damage;
+			isInvincible = true;
+
+			// Notify other subscribed components that the damageble was hit to handle the knockback
+			animator.SetTrigger(AnimStrings.hitTrigger);
+			LockVelocity = true;
+			damageableHit?.Invoke(damage, knockback);
+			CharacterEvents.characterDamaged.Invoke(gameObject, damage);
+
+			return true;
+		}
+
+		// Unable to be hit
+		return false;
+	}
+
+
 
 
 
