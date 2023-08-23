@@ -46,6 +46,11 @@ public class PlayerManager : MonoBehaviour
 		get { return animator.GetBool(AnimStrings.isAlive); }
 	}
 
+	public bool LockVelocity
+	{
+		get { return animator.GetBool(AnimStrings.lockVelocity); }
+		set { animator.SetBool(AnimStrings.lockVelocity, value); }
+	}
 
 	public Vector2 CurrentSpeed
 	{
@@ -61,6 +66,8 @@ public class PlayerManager : MonoBehaviour
 		}
 	}
 
+
+
 	Rigidbody2D rb;
 	Animator animator;
 	Directions directions;
@@ -72,6 +79,25 @@ public class PlayerManager : MonoBehaviour
 		directions = GetComponent<Directions>();
 		playerInput = GetComponent<PlayerInput>();
 	}
+	private void FixedUpdate()
+	{
+		if (!IsAlive)
+		{
+			playerInput.enabled = false;
+			//TODO GameOverAnim() with SceneChange
+		}
+		else { playerInput.enabled = true; }
+
+		// update speed
+		if (!LockVelocity) { rb.velocity = CurrentSpeed; }
+		animator.SetFloat(AnimStrings.yVelocity, rb.velocity.y);
+
+		// Go smooth on stairs
+		if (!directions.OnStair) { rb.sharedMaterial = MaterialFriction10; }
+		else { rb.sharedMaterial = MaterialFriction0; }
+	}
+
+
 	public void OnMove(InputAction.CallbackContext context)
 	{
 		moveInput = context.ReadValue<Vector2>();
@@ -108,26 +134,17 @@ public class PlayerManager : MonoBehaviour
 		}
 	}
 
-	protected Vector2 facing(Vector2 moveInput, Transform transform)
+	private Vector2 facing(Vector2 moveInput, Transform transform)
 	{
 		if (moveInput.x > 0 && transform.localScale.x < 0) { return new Vector2(-1, 1); }
 		else if (moveInput.x < 0 && transform.localScale.x > 0) { return new Vector2(-1, 1); }
 		return new Vector2(1, 1);
 	}
 
-
-
-	private void FixedUpdate()
+	public void OnHit(int damage, Vector2 knockback)
 	{
-		if (!IsAlive)
-		{
-			playerInput.enabled = false;
-			//TODO GameOverAnim() with SceneChange
-		}
-		else { playerInput.enabled = true; }
-		rb.velocity = CurrentSpeed;
-		animator.SetFloat(AnimStrings.yVelocity, rb.velocity.y);
-		if (!directions.OnStair) { rb.sharedMaterial = MaterialFriction10; }
-		else { rb.sharedMaterial = MaterialFriction0; }
+		LockVelocity = true;
+		rb.velocity = new Vector2(knockback.x, rb.velocity.y * knockback.y);
 	}
+
 }

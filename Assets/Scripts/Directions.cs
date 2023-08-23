@@ -7,7 +7,7 @@ public class Directions : MonoBehaviour
 {
 	public ContactFilter2D contactFilter;
 	float groundDistance = 0.05f;
-	float wallDistance = 0.1f;
+	float wallDistance = 0.05f;
 	float ceilingDistance = 0.05f;
 	RaycastHit2D[] groundHits = new RaycastHit2D[5];
 	RaycastHit2D[] wallHits = new RaycastHit2D[5];
@@ -17,7 +17,7 @@ public class Directions : MonoBehaviour
 	RaycastHit2D[] onStairHits = new RaycastHit2D[5];
 
 
-	public Vector2 wallDirection => rb.velocity.x > 0 ? Vector2.right : Vector2.left;
+	public Vector2 wallDirection => transform.localScale.x > 0 ? Vector2.right : Vector2.left;
 
 	[SerializeField]
 	private bool _isGrounded;
@@ -69,14 +69,13 @@ public class Directions : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 	}
 
-	private void FixedUpdate()
+	private void Update()
 	{
 		IsGrounded = col.Cast(Vector2.down, contactFilter, groundHits, groundDistance) > 0;
 		IsOnWall = col.Cast(wallDirection, contactFilter, wallHits, wallDistance) > 0;
 		IsOnCeiling = col.Cast(Vector2.up, contactFilter, ceilingHits, ceilingDistance) > 0;
 
-		OnStair = col.Cast(Vector2.down, contactFilter, onStairHits, onStairDownDistance) > 0 && IsOnWall;
-
+		OnStair = (col.Cast(Vector2.down, contactFilter, onStairHits, onStairDownDistance) > 0) && IsOnWall;
 	}
 
 }

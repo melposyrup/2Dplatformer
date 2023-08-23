@@ -10,8 +10,8 @@ public class Hyena : MonoBehaviour
 	public DetectionZone attackZone;
 
 	private Vector2 walkDirectionVector = Vector2.right;
-	public enum WALK_DIRECTION { RIGHT, LEFT };
 
+	public enum WALK_DIRECTION { RIGHT, LEFT };
 	private WALK_DIRECTION _walkDirection;
 	public WALK_DIRECTION WalkDirection
 	{
@@ -20,7 +20,7 @@ public class Hyena : MonoBehaviour
 		{
 			if (_walkDirection != value)
 			{
-				transform.localScale *= new Vector2(-1, 1);
+				transform.localScale = new Vector2(transform.localScale.x * -1 ,transform.localScale.y);
 				if (value == WALK_DIRECTION.RIGHT) { walkDirectionVector = Vector2.right; }
 				else if (value == WALK_DIRECTION.LEFT) { walkDirectionVector = Vector2.left; }
 			}
@@ -44,6 +44,7 @@ public class Hyena : MonoBehaviour
 		get { return animator.GetBool(AnimStrings.canMove); }
 	}
 
+
 	Rigidbody2D rb;
 	Directions directions;
 	Animator animator;
@@ -62,12 +63,8 @@ public class Hyena : MonoBehaviour
 	private void FixedUpdate()
 	{
 
-		if (directions.IsGrounded && directions.IsOnWall && CanMove)
-		{
-			FlipDirection();
-			//Debug.Log("IsOnWall:" + directions.IsOnWall + "wallDirection:" + directions.wallDirection);
-		}
-		if (CanMove) { rb.velocity = new Vector2(walkSpeed * walkDirectionVector.x, rb.velocity.y); }
+		if (directions.IsGrounded && directions.IsOnWall && CanMove) { FlipDirection(); }
+		if (CanMove) { rb.velocity = new Vector2(walkSpeed * walkDirectionVector.x , rb.velocity.y); }
 		else { rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x, 0, walkStopRate), rb.velocity.y); }
 	}
 	private void FlipDirection()

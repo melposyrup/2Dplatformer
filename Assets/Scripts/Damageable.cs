@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Damageable : MonoBehaviour
 {
+	public UnityEvent<int, Vector2> damageableHit;
+
+
+
 	[SerializeField] private float _maxHealth = 100f;
 	public float MaxHealth
 	{
@@ -18,7 +23,7 @@ public class Damageable : MonoBehaviour
 		set
 		{
 			_health = value;
-			if (_health < 0) { IsAlive = false; }
+			if (_health <= 0) { IsAlive = false; }
 		}
 	}
 
@@ -34,7 +39,11 @@ public class Damageable : MonoBehaviour
 		}
 	}
 
-	private bool isInvincible = false;
+	[SerializeField] private bool isInvincible = false;
+
+
+
+
 	private float timeSinceHit = 0f;
 	public float invincibilityTimer = 0.25f;
 
@@ -46,13 +55,23 @@ public class Damageable : MonoBehaviour
 		animator = GetComponent<Animator>();
 	}
 
-	public void Hit(int damage)
+	// Return whether the damageable took damage or not
+	public bool Hit(int damage, Vector2 knockback)
 	{
 		if (_isAlive && !isInvincible)
 		{
 			Health -= damage;
 			isInvincible = true;
+
+			// Notify other subscribed components that the damageble was hit to handle the knockback
+			animator.SetTrigger(AnimStrings.hitTrigger);
+			damageableHit?.Invoke(damage, knockback);
+
+			return true;
 		}
+
+		// Unable to be hit
+		return false;
 	}
 
 	private void Update()
@@ -67,7 +86,7 @@ public class Damageable : MonoBehaviour
 			timeSinceHit += Time.deltaTime;
 		}
 
-		Hit(5);
+		//Hit(5);
 	}
 
 
