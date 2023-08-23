@@ -8,6 +8,7 @@ public class Hyena : MonoBehaviour
 	[SerializeField] float walkSpeed = 4f;
 	[SerializeField] float walkStopRate = 0.1f;
 	public DetectionZone attackZone;
+	public DetectionZone cliffZone;
 
 	private Vector2 walkDirectionVector = Vector2.right;
 
@@ -20,7 +21,7 @@ public class Hyena : MonoBehaviour
 		{
 			if (_walkDirection != value)
 			{
-				transform.localScale = new Vector2(transform.localScale.x * -1 ,transform.localScale.y);
+				transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);
 				if (value == WALK_DIRECTION.RIGHT) { walkDirectionVector = Vector2.right; }
 				else if (value == WALK_DIRECTION.LEFT) { walkDirectionVector = Vector2.left; }
 			}
@@ -48,11 +49,13 @@ public class Hyena : MonoBehaviour
 	Rigidbody2D rb;
 	Directions directions;
 	Animator animator;
+	Damageable damageable;
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		directions = GetComponent<Directions>();
 		animator = GetComponent<Animator>();
+		damageable = GetComponent<Damageable>();
 	}
 
 	private void Update()
@@ -64,8 +67,10 @@ public class Hyena : MonoBehaviour
 	{
 
 		if (directions.IsGrounded && directions.IsOnWall && CanMove) { FlipDirection(); }
-		if (CanMove) { rb.velocity = new Vector2(walkSpeed * walkDirectionVector.x , rb.velocity.y); }
+
+		if (CanMove && !damageable.LockVelocity) { rb.velocity = new Vector2(walkSpeed * walkDirectionVector.x, rb.velocity.y); }
 		else { rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x, 0, walkStopRate), rb.velocity.y); }
+
 	}
 	private void FlipDirection()
 	{
@@ -73,6 +78,16 @@ public class Hyena : MonoBehaviour
 		else if (WalkDirection == WALK_DIRECTION.LEFT) { WalkDirection = WALK_DIRECTION.RIGHT; }
 		else { Debug.LogError("Current WalkDirection is not set to legal value"); }
 		//Debug.Log(walkDirectionVector);
+	}
+
+	public void OnHit(int damage, Vector2 knockback)
+	{
+		rb.velocity = new Vector2(knockback.x, rb.velocity.y * knockback.y);
+	}
+
+	public void OnCliffDetected()
+	{
+		if (directions.IsGrounded) { FlipDirection(); }
 	}
 
 }

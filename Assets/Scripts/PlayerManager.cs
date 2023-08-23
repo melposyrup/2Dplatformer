@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
+[RequireComponent(typeof(Rigidbody2D), typeof(Animator),typeof(Damageable))]
 public class PlayerManager : MonoBehaviour
 {
 	[SerializeField] float walkSpeed = 4f;
@@ -46,11 +46,7 @@ public class PlayerManager : MonoBehaviour
 		get { return animator.GetBool(AnimStrings.isAlive); }
 	}
 
-	public bool LockVelocity
-	{
-		get { return animator.GetBool(AnimStrings.lockVelocity); }
-		set { animator.SetBool(AnimStrings.lockVelocity, value); }
-	}
+
 
 	public Vector2 CurrentSpeed
 	{
@@ -72,12 +68,14 @@ public class PlayerManager : MonoBehaviour
 	Animator animator;
 	Directions directions;
 	PlayerInput playerInput;
+	Damageable damageable;
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 		directions = GetComponent<Directions>();
 		playerInput = GetComponent<PlayerInput>();
+		damageable = GetComponent<Damageable>();
 	}
 	private void FixedUpdate()
 	{
@@ -89,7 +87,7 @@ public class PlayerManager : MonoBehaviour
 		else { playerInput.enabled = true; }
 
 		// update speed
-		if (!LockVelocity) { rb.velocity = CurrentSpeed; }
+		if (!damageable.LockVelocity) { rb.velocity = CurrentSpeed; }
 		animator.SetFloat(AnimStrings.yVelocity, rb.velocity.y);
 
 		// Go smooth on stairs
@@ -143,7 +141,6 @@ public class PlayerManager : MonoBehaviour
 
 	public void OnHit(int damage, Vector2 knockback)
 	{
-		LockVelocity = true;
 		rb.velocity = new Vector2(knockback.x, rb.velocity.y * knockback.y);
 	}
 

@@ -11,6 +11,7 @@ public class Attack : MonoBehaviour
 	private void Awake()
 	{
 		attackCol = GetComponent<Collider2D>();
+		attackCol.enabled = false;
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -19,7 +20,8 @@ public class Attack : MonoBehaviour
 		Damageable damageable = collision.GetComponent<Damageable>();
 		if (damageable != null)
 		{
-			bool gotHit = damageable.Hit(attackDamage,knockback);
+			if (transform.parent.localScale.x < 0) { knockback *= new Vector2(-1, 1); }
+			bool gotHit = damageable.Hit(attackDamage, knockback);
 			if (gotHit) { Debug.Log(collision.name + "hit for " + attackDamage); }
 		}
 
