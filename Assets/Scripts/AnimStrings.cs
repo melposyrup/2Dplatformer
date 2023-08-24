@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 internal class AnimStrings
 {
+	// for characters
 	internal static string isWalking = "isWalking";
 	internal static string isRunning = "isRunning";
 	internal static string isGrounded = "isGrounded";
@@ -20,5 +21,6 @@ internal class AnimStrings
 	internal static string isAlive = "isAlive";
 	internal static string lockVelocity= "lockVelocity";
 	internal static string hitTrigger= "hit";
+
 }
 

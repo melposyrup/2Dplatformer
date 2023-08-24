@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Animator),typeof(Damageable))]
+[RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(Damageable))]
 public class PlayerManager : MonoBehaviour
 {
 	[SerializeField] float walkSpeed = 4f;
@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
 			animator.SetBool(AnimStrings.isWalking, value);
 		}
 	}
+
 	private bool _isRunning = false;
 	public bool IsRunning
 	{
@@ -76,6 +77,8 @@ public class PlayerManager : MonoBehaviour
 		directions = GetComponent<Directions>();
 		playerInput = GetComponent<PlayerInput>();
 		damageable = GetComponent<Damageable>();
+
+		playerInput.enabled = true;
 	}
 	private void FixedUpdate()
 	{
@@ -84,7 +87,7 @@ public class PlayerManager : MonoBehaviour
 			playerInput.enabled = false;
 			//TODO GameOverAnim() with SceneChange
 		}
-		else { playerInput.enabled = true; }
+		//else { playerInput.enabled = true; }
 
 		// update speed
 		if (!damageable.LockVelocity) { rb.velocity = CurrentSpeed; }

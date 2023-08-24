@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
 
 	private void Awake()
 	{
-		Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
+		//Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
 		gameCanvus = FindObjectOfType<Canvas>();
 
 	}

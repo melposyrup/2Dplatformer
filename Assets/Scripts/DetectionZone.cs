@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class DetectionZone : MonoBehaviour
 {
+	public UnityEvent ColliderRemain;
 	public UnityEvent noColliderRemain;
 
 	public List<Collider2D> detectedCol = new List<Collider2D>();
@@ -18,6 +19,7 @@ public class DetectionZone : MonoBehaviour
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		detectedCol.Add(collision);
+		if (detectedCol.Count > 0) { ColliderRemain.Invoke(); }
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)
