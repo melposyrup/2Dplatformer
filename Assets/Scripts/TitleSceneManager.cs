@@ -41,6 +41,7 @@ public class TitleSceneManager : MonoBehaviour
 	private void Start()
 	{
 		fadeLayerFading.StartFadeOut();
+		SoundManager.Instance.PlayBGM(BGMSoundData.BGM.TitleScene);
 	}
 	private void Update()
 	{
@@ -50,6 +51,8 @@ public class TitleSceneManager : MonoBehaviour
 			if (detectionCol) { detectionCol.isTrigger = true; }
 			if (playerManager) { playerManager.enabled = false; }
 			if (playerInput) { playerInput.enabled = false; }
+
+			SoundManager.Instance.PlaySE(SESoundData.SE.Enter);
 
 			StartCoroutine(movePlayer());
 		}

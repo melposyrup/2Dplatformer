@@ -50,8 +50,10 @@ public class PlaySceneManager : MonoBehaviour
 		if (leftAirWall) { leftAirWall.GetComponent<BoxCollider2D>().isTrigger = true; }
 		StartCoroutine(movePlayer());
 		fadeLayerFading.StartFadeOut();
-		loadingFading.ResetAlpha(0f);
-		gameOverFading.ResetAlpha(0f);
+		loadingFading.SetAlpha(0f);
+		gameOverFading.SetAlpha(0f);
+		SoundManager.Instance.PlayBGM(BGMSoundData.BGM.PlayScene);
+
 	}
 
 	public void CheckSaveData(GameObject lastSavePoint)
@@ -70,10 +72,12 @@ public class PlaySceneManager : MonoBehaviour
 	}
 	private IEnumerator LoadSave(GameObject lastSavePoint)
 	{
+		loadingFading.StartFadeIn();
 		yield return new WaitForSeconds(delay);
-		loadingFading.StartFadeInAndOut();
 		fadeLayerFading.StartFadeInAndOut();
 		yield return new WaitForSeconds(1.0f);
+		loadingFading.StartFadeOut();
+
 		if (lastSavePoint)
 		{
 			Vector3 pos = lastSavePoint.GetComponent<Transform>().position;
@@ -82,13 +86,15 @@ public class PlaySceneManager : MonoBehaviour
 			playerTransform.position = pos;
 			playerInput.enabled = true;
 		}
-
+		SoundManager.Instance.PlaySE(SESoundData.SE.Enter);
 	}
 
 	private IEnumerator GameOver()
 	{
-		yield return new WaitForSeconds(delay);
 		gameOverFading.StartFadeIn();
+		SoundManager.Instance.StopBGM(BGMSoundData.BGM.PlayScene);
+		SoundManager.Instance.PlaySE(SESoundData.SE.GameOver);
+		yield return new WaitForSeconds(delay);
 		fadeLayerFading.StartFadeIn();
 		yield return new WaitForSeconds(1.0f);
 		SceneManager.LoadScene("TitleScene");

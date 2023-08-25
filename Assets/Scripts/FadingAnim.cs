@@ -6,19 +6,28 @@ using UnityEngine.UI;
 public class FadingAnim : MonoBehaviour
 {
 	public float fadeDuration = 1f;
+	public float initialAlpha = 0f;
+
 
 	Image image;
 	private void Awake()
 	{
 		image = GetComponent<Image>();
 	}
+	private void Start()
+	{
+		image.color = new Color(image.color.r, image.color.g, image.color.b, initialAlpha);
+	}
+
+	public void SetAlpha(float value)
+	{
+		image.color = new Color(image.color.r, image.color.g, image.color.b, value);
+	}
 
 	public void StartFadeOut()
 	{
 		StartCoroutine(AlphaDecrease());
 	}
-
-
 	private System.Collections.IEnumerator AlphaDecrease()
 	{
 		float fadeTime = fadeDuration;
@@ -37,6 +46,7 @@ public class FadingAnim : MonoBehaviour
 
 		image.color = endColor;
 	}
+
 
 	public void StartFadeIn()
 	{
@@ -62,10 +72,6 @@ public class FadingAnim : MonoBehaviour
 		image.color = endColor;
 	}
 
-	public void ResetAlpha(float value)
-	{
-		image.color = new Color(image.color.r, image.color.g, image.color.b, value);
-	}
 
 	public void StartFadeInAndOut()
 	{
@@ -76,7 +82,7 @@ public class FadingAnim : MonoBehaviour
 		float fadeTime = fadeDuration;
 		float timeElapsed = 0f;
 
-		Color startColor = image.color;
+		Color startColor = new Color(image.color.r, image.color.g, image.color.b, 0f);
 		Color endColor = new Color(startColor.r, startColor.g, startColor.b, 1f);
 
 		while (timeElapsed < fadeTime)

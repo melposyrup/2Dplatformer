@@ -90,5 +90,9 @@ public class Hyena : MonoBehaviour
 		if (directions.IsGrounded) { FlipDirection(); }
 	}
 
+	public void OnDieSound()
+	{
+		SoundManager.Instance.PlaySE(SESoundData.SE.Kill);
+	}
 
 }

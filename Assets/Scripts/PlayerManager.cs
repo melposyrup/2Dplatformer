@@ -110,8 +110,8 @@ public class PlayerManager : MonoBehaviour
 		transform.localScale *= Facing(moveInput, transform);
 
 		IsWalking = (moveInput != Vector2.zero);
-
 	}
+
 	public void OnRun(InputAction.CallbackContext context)
 	{
 		if (context.started) { IsRunning = true; }
@@ -128,6 +128,7 @@ public class PlayerManager : MonoBehaviour
 				animator.SetTrigger(AnimStrings.jumpTrigger);
 				rb.velocity = new Vector2(rb.velocity.x, jumpImpulse);
 				jumpCount++;
+				SoundManager.Instance.PlaySE(SESoundData.SE.Jump);
 			}
 		}
 	}
@@ -157,7 +158,7 @@ public class PlayerManager : MonoBehaviour
 		playSceneManager.CheckSaveData(lastSavePoint);
 	}
 
-	
+
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -174,4 +175,28 @@ public class PlayerManager : MonoBehaviour
 		}
 	}
 
+	public void OnMoveSound()
+	{
+		SoundManager.Instance.PlaySE(SESoundData.SE.Move);
+	}
+	public void OnAttackSound()
+	{
+		SoundManager.Instance.PlaySE(SESoundData.SE.Attack);
+	}
+	public void OnLandingSound()
+	{
+		SoundManager.Instance.PlaySE(SESoundData.SE.Land);
+	}
+	public void OnClimbSound()
+	{
+		SoundManager.Instance.PlaySE(SESoundData.SE.Climb);
+	}
+	public void OnHurtSound()
+	{
+		SoundManager.Instance.PlaySE(SESoundData.SE.Hurt);
+	}
+	public void OnDieSound()
+	{
+		SoundManager.Instance.PlaySE(SESoundData.SE.Die);
+	}
 }
