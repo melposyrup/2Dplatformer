@@ -14,15 +14,15 @@ public class FadeInImage : MonoBehaviour
 	}
 	private void Start()
 	{
-		image.color = new Color(image.color.r, image.color.g, image.color.b, 0);
+		ResetColor();
 	}
 
-	public void StartFadeRemove()
+	public void StartFadeIn()
 	{
-		StartCoroutine(FadeRemove());
+		StartCoroutine(AlphaIncrease());
 	}
 
-	private System.Collections.IEnumerator FadeRemove()
+	private System.Collections.IEnumerator AlphaIncrease()
 	{
 		float fadeTime = fadeDuration;
 		float timeElapsed = 0f;
@@ -39,6 +39,11 @@ public class FadeInImage : MonoBehaviour
 		}
 
 		image.color = endColor;
+	}
+
+	public void ResetColor()
+	{
+		image.color = new Color(image.color.r, image.color.g, image.color.b, 0);
 	}
 
 }

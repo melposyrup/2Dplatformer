@@ -70,6 +70,10 @@ public class PlayerManager : MonoBehaviour
 	Directions directions;
 	PlayerInput playerInput;
 	Damageable damageable;
+
+	public GameObject Camera;
+	PlaySceneManager playSceneManager;
+
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
@@ -78,15 +82,14 @@ public class PlayerManager : MonoBehaviour
 		playerInput = GetComponent<PlayerInput>();
 		damageable = GetComponent<Damageable>();
 
+		Camera = GameObject.FindWithTag("MainCamera");
+		playSceneManager = Camera.GetComponent<PlaySceneManager>();
+
 		playerInput.enabled = true;
 	}
 	private void FixedUpdate()
 	{
-		if (!IsAlive)
-		{
-			playerInput.enabled = false;
-			//TODO GameOverAnim() with SceneChange
-		}
+		if (!IsAlive) { playerInput.enabled = false; }
 		//else { playerInput.enabled = true; }
 
 		// update speed
@@ -145,6 +148,28 @@ public class PlayerManager : MonoBehaviour
 	public void OnHit(int damage, Vector2 knockback)
 	{
 		rb.velocity = new Vector2(knockback.x, rb.velocity.y * knockback.y);
+	}
+
+	public void OnDeath()
+	{
+		playSceneManager.CheckSaveData(lastSavePoint);
+	}
+
+	public GameObject lastSavePoint;
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+
+		if (collision.gameObject.CompareTag("SavePoint"))
+		{
+			if (lastSavePoint != null)
+			{
+				Vector3 pos = collision.transform.position;
+				Vector3 posLast = lastSavePoint.transform.position;
+				if (pos != posLast) { Destroy(lastSavePoint); }
+			}
+			lastSavePoint = collision.gameObject;
+		}
 	}
 
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Map
   - DetectionZone
+  - SavePoint
   layers:
   - Default
   - TransparentFX

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 39328e2b0e2c1574182a722fbccb979f
+guid: 57c4e390a9a39634c9d5f1cd8a4c11fd
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -105,7 +105,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: gem_0
+      name: gem_blue_0
       rect:
         serializedVersion: 2
         x: 0
@@ -119,14 +119,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5dca3e6456c4dab43adc8d2f87256270
-      internalID: -1501524061
+      spriteID: 823715c889ffedb4ead86cca9846a0f2
+      internalID: -1145339537
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gem_1
+      name: gem_blue_1
       rect:
         serializedVersion: 2
         x: 15
@@ -140,14 +140,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2b76c9f3b9329e24ab6e71f2542dd602
-      internalID: -2080422914
+      spriteID: 18b71d4626e36b249a3a5f70ed5f40da
+      internalID: 1228314076
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gem_2
+      name: gem_blue_2
       rect:
         serializedVersion: 2
         x: 30
@@ -161,14 +161,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5769e8147dcdb084ea786a6533b6e949
-      internalID: -129795085
+      spriteID: 88ff5fb59166be148800deee8e6491ad
+      internalID: 14850265
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gem_3
+      name: gem_blue_3
       rect:
         serializedVersion: 2
         x: 45
@@ -182,14 +182,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e715ac60ddd486c49ab689e493d686ec
-      internalID: 827260775
+      spriteID: 4bbf7b8ddf2d3a242843f8fe3e68588c
+      internalID: -823067592
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gem_4
+      name: gem_blue_4
       rect:
         serializedVersion: 2
         x: 60
@@ -203,8 +203,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3373cdca5e2c4064b8a0466f9cda8739
-      internalID: 21160324
+      spriteID: 62b89421071fbce4196bbad6644728a5
+      internalID: -1152983699
       vertices: []
       indices: 
       edges: []
@@ -220,11 +220,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      gem_0: -1501524061
-      gem_1: -2080422914
-      gem_2: -129795085
-      gem_3: 827260775
-      gem_4: 21160324
+      gem_blue_0: -1145339537
+      gem_blue_1: 1228314076
+      gem_blue_2: 14850265
+      gem_blue_3: -823067592
+      gem_blue_4: -1152983699
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
