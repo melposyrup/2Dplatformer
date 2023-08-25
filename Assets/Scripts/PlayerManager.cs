@@ -74,6 +74,8 @@ public class PlayerManager : MonoBehaviour
 	public GameObject Camera;
 	PlaySceneManager playSceneManager;
 
+	public GameObject lastSavePoint;
+
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
@@ -105,7 +107,7 @@ public class PlayerManager : MonoBehaviour
 	public void OnMove(InputAction.CallbackContext context)
 	{
 		moveInput = context.ReadValue<Vector2>();
-		transform.localScale *= facing(moveInput, transform);
+		transform.localScale *= Facing(moveInput, transform);
 
 		IsWalking = (moveInput != Vector2.zero);
 
@@ -138,7 +140,7 @@ public class PlayerManager : MonoBehaviour
 		}
 	}
 
-	private Vector2 facing(Vector2 moveInput, Transform transform)
+	private Vector2 Facing(Vector2 moveInput, Transform transform)
 	{
 		if (moveInput.x > 0 && transform.localScale.x < 0) { return new Vector2(-1, 1); }
 		else if (moveInput.x < 0 && transform.localScale.x > 0) { return new Vector2(-1, 1); }
@@ -155,7 +157,7 @@ public class PlayerManager : MonoBehaviour
 		playSceneManager.CheckSaveData(lastSavePoint);
 	}
 
-	public GameObject lastSavePoint;
+	
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{

@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class BackgroundManager : MonoBehaviour
 {
-	public GameObject player;
+	public GameObject mainCamera;
 
 	private void Awake()
 	{
-		player = GameObject.FindGameObjectWithTag("Player");
-		transform.position = player.transform.position;
+		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+
+	}
+	private void Start()
+	{
+		Vector3 cameraPos = mainCamera.GetComponent<Transform>().position;
+		transform.position = new Vector3(cameraPos.x, cameraPos.y, 0f);
 	}
 }

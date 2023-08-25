@@ -16,7 +16,10 @@ public class TitleSceneManager : MonoBehaviour
 
 	public GameObject detection;
 	BoxCollider2D detectionCol;
-	DetectionZone detectionZone;
+
+	public GameObject fadeLayerPrefab;
+	FadingAnim fadeLayerFading;
+
 
 	private void Awake()
 	{
@@ -31,10 +34,14 @@ public class TitleSceneManager : MonoBehaviour
 
 		detection = GameObject.FindWithTag("DetectionZone");
 		detectionCol = detection.GetComponent<BoxCollider2D>();
-		detectionZone = detection.GetComponent<DetectionZone>();
+
+		fadeLayerFading = fadeLayerPrefab.GetComponent<FadingAnim>();
 	}
 
-
+	private void Start()
+	{
+		fadeLayerFading.StartFadeOut();
+	}
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Return))
@@ -46,6 +53,9 @@ public class TitleSceneManager : MonoBehaviour
 
 			StartCoroutine(movePlayer());
 		}
+
+		if (Input.GetKeyDown(KeyCode.Escape)) { Exit(); }
+
 	}
 
 	private System.Collections.IEnumerator movePlayer()
@@ -69,6 +79,23 @@ public class TitleSceneManager : MonoBehaviour
 	public void SceneChange()
 	{
 		SceneManager.LoadScene("PlayScene");
+	}
+
+	public void Exit()
+	{
+
+#if (UNITY_EDITOR || DEVELOPMENT_BUILD)
+		Debug.Log(this.name + ":" + this.GetType() + ":" + System.Reflection.MethodBase.GetCurrentMethod().Name);
+#endif
+
+#if (UNITY_EDITOR)
+		UnityEditor.EditorApplication.isPlaying = false;
+#elif (UNITY_STANDALONE)
+			Application.Quit();
+#elif (UNITY_WEBGL)
+			SceneManager.LoadScene("QuitScene");
+#endif
+
 	}
 
 }

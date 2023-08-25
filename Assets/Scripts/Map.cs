@@ -6,49 +6,49 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public class Map : MonoBehaviour
 {
 	[Header("Map Settings")]
-	[SerializeField] GameObject player;
+	[SerializeField] GameObject Camera;
 	[SerializeField] float mapWidth;
 	[SerializeField] int mapNums = 3;
 	[SerializeField] float totalWidth;
 	[SerializeField] float fraction = 1f;
 	private Vector3 lastPos;
-	private Vector3 lastPosPlayer;
+	private Vector3 lastPosCamera;
 
 	private void Awake()
 	{
-		player = GameObject.FindGameObjectWithTag("Player");
+		Camera = GameObject.FindGameObjectWithTag("MainCamera");
 		mapWidth = GetComponent<SpriteRenderer>().sprite.bounds.size.x;
 	}
 
 	private void Start()
 	{
 		totalWidth = mapWidth * mapNums;
-		lastPos = player.transform.position;
-		lastPosPlayer = player.transform.position;
+		lastPos = Camera.transform.position;
+		lastPosCamera = Camera.transform.position;
 	}
 
 	private void FixedUpdate()
 	{
 		Vector2 MoveAmount = new Vector2(
-			player.transform.position.x - lastPosPlayer.x,
-			player.transform.position.y - lastPosPlayer.y);
+			Camera.transform.position.x - lastPosCamera.x,
+			Camera.transform.position.y - lastPosCamera.y);
 
 		transform.position += new Vector3(MoveAmount.x * fraction, MoveAmount.y * fraction, 0f);
 
 		Vector3 tempPosition = transform.position;
-		if (player.transform.position.x > transform.position.x + totalWidth / 2)
+		if (Camera.transform.position.x > transform.position.x + totalWidth / 2)
 		{
 			tempPosition.x += totalWidth;
 			transform.position = tempPosition;
 		}
-		else if (player.transform.position.x < transform.position.x - totalWidth / 2)
+		else if (Camera.transform.position.x < transform.position.x - totalWidth / 2)
 		{
 			tempPosition.x -= totalWidth;
 			transform.position = tempPosition;
 		}
 
 		lastPos = transform.position;
-		lastPosPlayer = player.transform.position;
+		lastPosCamera = Camera.transform.position;
 	}
 
 }
