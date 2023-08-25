@@ -8,10 +8,4 @@ public class ItemFeedback : MonoBehaviour
 	{
 		Destroy(this.gameObject);
 	}
-
-	public void OnFeedbackSound()
-	{
-		SoundManager.Instance.PlaySE(SESoundData.SE.Kill);
-	}
-
 }

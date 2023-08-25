@@ -19,6 +19,7 @@ public class SavePoint : MonoBehaviour
 			if (collision.gameObject.CompareTag("Player"))
 			{
 				animator.SetBool(AnimStrings.saved, true);
+				SoundManager.Instance.PlaySE(SESoundData.SE.Kill);
 				Instantiate(ItemFeedbackEffect, transform.position, transform.rotation);
 			}
 		}

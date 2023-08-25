@@ -26,7 +26,7 @@ public class TEST_SCRIPT : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.E))
 		{
-			loadingFading.StartFadeInAndOut();
+			//loadingFading.StartFadeInAndOut();
 
 
 
@@ -34,7 +34,7 @@ public class TEST_SCRIPT : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.S))
 		{
 
-			fadeLayerFading.StartFadeInAndOut();
+			//fadeLayerFading.StartFadeInAndOut();
 
 		}
 

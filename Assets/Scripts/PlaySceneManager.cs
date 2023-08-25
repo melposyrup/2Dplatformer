@@ -24,10 +24,10 @@ public class PlaySceneManager : MonoBehaviour
 	public GameObject fadeLayerPrefab;
 	FadingAnim fadeLayerFading;
 
-	public float delay = 3f;
+	public float delay = 2f;
 
 	public GameObject openingDetection;
-	public GameObject leftAirWall;
+
 
 	private void Awake()
 	{
@@ -47,7 +47,6 @@ public class PlaySceneManager : MonoBehaviour
 	}
 	private void Start()
 	{
-		if (leftAirWall) { leftAirWall.GetComponent<BoxCollider2D>().isTrigger = true; }
 		StartCoroutine(movePlayer());
 		fadeLayerFading.StartFadeOut();
 		loadingFading.SetAlpha(0f);
@@ -133,7 +132,6 @@ public class PlaySceneManager : MonoBehaviour
 	public void ComponentInactive()
 	{
 		if (openingDetection) { openingDetection.GetComponent<BoxCollider2D>().enabled = false; }
-		if (leftAirWall) { leftAirWall.GetComponent<BoxCollider2D>().isTrigger = false; }
 	}
 
 }

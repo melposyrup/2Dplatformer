@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class Damageable : MonoBehaviour
 {
 	public UnityEvent<int, Vector2> damageableHit;
-
+	public UnityEvent<int, int> healthChanged;
 
 
 	[SerializeField] private int _maxHealth = 100;
@@ -23,6 +23,7 @@ public class Damageable : MonoBehaviour
 		set
 		{
 			_health = value;
+			healthChanged?.Invoke(_health, MaxHealth);
 			if (_health <= 0) { IsAlive = false; }
 		}
 	}

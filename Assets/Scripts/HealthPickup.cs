@@ -16,10 +16,10 @@ public class HealthPickup : MonoBehaviour
 			bool wasHealed = damageable.Heal(healthRestore);
 			if (wasHealed)
 			{
+				SoundManager.Instance.PlaySE(SESoundData.SE.Heal);
 				Instantiate(ItemFeedbackEffect, transform.position, transform.rotation);
 				Destroy(gameObject);
 			}
-
 		}
 	}
 
