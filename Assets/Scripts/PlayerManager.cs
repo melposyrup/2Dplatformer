@@ -88,6 +88,7 @@ public class PlayerManager : MonoBehaviour
 		playSceneManager = Camera.GetComponent<PlaySceneManager>();
 
 		playerInput.enabled = true;
+		lastSavePoint = null;
 	}
 	private void FixedUpdate()
 	{

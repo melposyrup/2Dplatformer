@@ -1,9 +1,11 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class PlaySceneManager : MonoBehaviour
 {
@@ -24,10 +26,12 @@ public class PlaySceneManager : MonoBehaviour
 	public GameObject fadeLayerPrefab;
 	FadingAnim fadeLayerFading;
 
-	public float delay = 2f;
-
 	public GameObject openingDetection;
+	public GameObject endingDetection;
+	Transform endingDetectionPos;
 
+	public GameObject healthBar;
+	public GameObject thanks;
 
 	private void Awake()
 	{
@@ -44,14 +48,98 @@ public class PlaySceneManager : MonoBehaviour
 		gameOverFading = gameOverPrefab.GetComponent<FadingAnim>();
 		loadingFading = loadingPrefab.GetComponent<FadingAnim>();
 		fadeLayerFading = fadeLayerPrefab.GetComponent<FadingAnim>();
+
+		endingDetectionPos = endingDetection.GetComponent<Transform>();
 	}
 	private void Start()
 	{
 		StartCoroutine(movePlayer());
+		fadeLayerFading.SetAlpha(1f);
 		fadeLayerFading.StartFadeOut();
 		loadingFading.SetAlpha(0f);
 		gameOverFading.SetAlpha(0f);
 		SoundManager.Instance.PlayBGM(BGMSoundData.BGM.PlayScene);
+		thanks.SetActive(false);
+	}
+
+	public void EndingAnimation()
+	{
+		StartCoroutine(EndingAnim());
+	}
+
+	private System.Collections.IEnumerator EndingAnim()
+	{
+		healthBar.SetActive(false);
+
+		// player wait for a while
+		if (playerManager) { playerManager.enabled = false; }
+		if (playerInput) { playerInput.enabled = false; }
+
+		// Fadeout BGM,  turn on se
+		SoundManager.Instance.FadeOutBGMbySeconds(BGMSoundData.BGM.PlayScene, 5f);
+		SoundManager.Instance.PlaySE(SESoundData.SE.Ending);
+
+		// stop Cinemachine, set follow to null
+		gameObject.GetComponent<CinemachineBrain>().enabled = false;
+
+		yield return new WaitForSeconds(1.0f);
+
+		// move camera 
+		StartCoroutine(moveCamera());
+
+		yield return null;
+	}
+
+	private System.Collections.IEnumerator moveCamera()
+	{
+		Transform pos = gameObject.GetComponent<Transform>();
+		float cameraMoveSpeed = 4f;
+		while (pos.position.x < endingDetectionPos.position.x)
+		{
+			pos.position = new Vector3(pos.position.x + cameraMoveSpeed * Time.deltaTime,
+				pos.position.y, pos.position.z);
+
+			yield return null;
+		}
+		yield return new WaitForSeconds(1.0f);
+
+		// runPlayer
+		StartCoroutine(runPlayer());
+	}
+
+	private System.Collections.IEnumerator runPlayer()
+	{
+		if (playerAnimator)
+		{
+			playerAnimator.SetBool(AnimStrings.isWalking, true);
+			playerAnimator.SetBool(AnimStrings.isRunning, true);
+		}
+		while (playerTransform.position.x < endingDetectionPos.position.x)
+		{
+			if (playerRb)
+			{
+				playerRb.velocity = new Vector2(8f, playerRb.velocity.y);
+				if (playerTransform)
+				{
+					if (playerTransform.localScale.x < 0)
+					{ playerTransform.localScale *= new Vector2(-1, 1); }
+				}
+			}
+			yield return null;
+		}
+
+		if (playerAnimator) { playerAnimator.SetBool(AnimStrings.isWalking, false); }
+
+
+		// fade in (white color) duration2s
+		fadeLayerFading.SetColor(new Color(1f, 1f, 1f, 0f));
+		fadeLayerFading.StartFadeInAndOut(3f);
+
+		// move scene to game clear
+		yield return new WaitForSeconds(3.0f);
+
+		// enable Thanks component
+		thanks.SetActive(true);
 
 	}
 
@@ -72,9 +160,9 @@ public class PlaySceneManager : MonoBehaviour
 	private IEnumerator LoadSave(GameObject lastSavePoint)
 	{
 		loadingFading.StartFadeIn();
-		yield return new WaitForSeconds(delay);
+		yield return new WaitForSeconds(2f);
 		fadeLayerFading.StartFadeInAndOut();
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(1f);
 		loadingFading.StartFadeOut();
 
 		if (lastSavePoint)
@@ -93,9 +181,9 @@ public class PlaySceneManager : MonoBehaviour
 		gameOverFading.StartFadeIn();
 		SoundManager.Instance.StopBGM(BGMSoundData.BGM.PlayScene);
 		SoundManager.Instance.PlaySE(SESoundData.SE.GameOver);
-		yield return new WaitForSeconds(delay);
+		yield return new WaitForSeconds(2f);
 		fadeLayerFading.StartFadeIn();
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(1f);
 		SceneManager.LoadScene("TitleScene");
 
 	}

@@ -20,6 +20,7 @@ public class TitleSceneManager : MonoBehaviour
 	public GameObject fadeLayerPrefab;
 	FadingAnim fadeLayerFading;
 
+	public GameObject airwall;
 
 	private void Awake()
 	{
@@ -40,6 +41,7 @@ public class TitleSceneManager : MonoBehaviour
 
 	private void Start()
 	{
+		fadeLayerFading.SetAlpha(1f);
 		fadeLayerFading.StartFadeOut();
 		SoundManager.Instance.PlayBGM(BGMSoundData.BGM.TitleScene);
 	}
@@ -53,6 +55,8 @@ public class TitleSceneManager : MonoBehaviour
 			if (playerInput) { playerInput.enabled = false; }
 
 			SoundManager.Instance.PlaySE(SESoundData.SE.Enter);
+
+			if (airwall) { airwall.SetActive(false); }
 
 			StartCoroutine(movePlayer());
 		}

@@ -38,13 +38,31 @@ public class SoundManager : MonoBehaviour
 		bgmAudioSource.volume = data.volume * bgmMasterVolume * masterVolume;
 		bgmAudioSource.Play();
 	}
-	public void SetBGMVolume(BGMSoundData.BGM bgm, float v)
+	public void FadeOutBGMbySeconds(BGMSoundData.BGM bgm, float fadeDuration)
+	{
+		StartCoroutine(FadeOutBGM(bgm, fadeDuration));
+	}
+
+	IEnumerator FadeOutBGM(BGMSoundData.BGM bgm,float fadeDuration)
 	{
 		BGMSoundData data = bgmSoundDatas.Find(data => data.bgm == bgm);
 		bgmAudioSource.clip = data.audioClip;
-		Mathf.Clamp(v, 0.0f, 1.0f);
-		bgmAudioSource.volume = v;
+
+		float startVolume = bgmAudioSource.volume;
+
+		for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+		{
+			float normalizedTime = t / fadeDuration;
+			bgmAudioSource.volume = Mathf.Lerp(startVolume, 0, normalizedTime);
+			yield return null;
+		}
+
+		bgmAudioSource.volume = 0;
+		bgmAudioSource.Stop();
 	}
+
+
+
 	public void StopBGM(BGMSoundData.BGM bgm)
 	{
 		bgmAudioSource.Stop();
@@ -105,6 +123,7 @@ public class SESoundData
 		Hurt,
 		GameOver,
 		Kill,
+		Ending,
 		// add tags here
 	}
 

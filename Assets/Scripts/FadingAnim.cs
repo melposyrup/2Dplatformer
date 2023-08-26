@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class FadingAnim : MonoBehaviour
 {
-	public float fadeDuration = 1f;
 	public float initialAlpha = 0f;
 
 
@@ -23,14 +22,18 @@ public class FadingAnim : MonoBehaviour
 	{
 		image.color = new Color(image.color.r, image.color.g, image.color.b, value);
 	}
-
-	public void StartFadeOut()
+	public void SetColor(Color color)
 	{
-		StartCoroutine(AlphaDecrease());
+		image.color = color;
 	}
-	private System.Collections.IEnumerator AlphaDecrease()
+
+
+	public void StartFadeOut(float fadeDuration = 1f)
 	{
-		float fadeTime = fadeDuration;
+		StartCoroutine(AlphaDecrease(fadeDuration));
+	}
+	private System.Collections.IEnumerator AlphaDecrease(float fadeTime)
+	{
 		float timeElapsed = 0f;
 
 		Color startColor = image.color;
@@ -48,14 +51,13 @@ public class FadingAnim : MonoBehaviour
 	}
 
 
-	public void StartFadeIn()
+	public void StartFadeIn(float fadeDuration = 1f)
 	{
-		StartCoroutine(AlphaIncrease());
+		StartCoroutine(AlphaIncrease(fadeDuration));
 	}
 
-	private System.Collections.IEnumerator AlphaIncrease()
+	private System.Collections.IEnumerator AlphaIncrease(float fadeTime)
 	{
-		float fadeTime = fadeDuration;
 		float timeElapsed = 0f;
 
 		Color startColor = image.color;
@@ -73,13 +75,12 @@ public class FadingAnim : MonoBehaviour
 	}
 
 
-	public void StartFadeInAndOut()
+	public void StartFadeInAndOut(float fadeDuration = 1f)
 	{
-		StartCoroutine(AlphaIncreaseThenDecrease());
+		StartCoroutine(AlphaIncreaseThenDecrease(fadeDuration));
 	}
-	private System.Collections.IEnumerator AlphaIncreaseThenDecrease()
+	private System.Collections.IEnumerator AlphaIncreaseThenDecrease(float fadeTime)
 	{
-		float fadeTime = fadeDuration;
 		float timeElapsed = 0f;
 
 		Color startColor = new Color(image.color.r, image.color.g, image.color.b, 0f);
