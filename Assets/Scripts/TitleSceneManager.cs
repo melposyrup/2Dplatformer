@@ -24,7 +24,7 @@ public class TitleSceneManager : MonoBehaviour
 
 	private void Awake()
 	{
-		Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
+		//Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
 
 		player = GameObject.FindWithTag("Player");
 		playerRb = player.GetComponent<Rigidbody2D>();
