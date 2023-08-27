@@ -10,9 +10,10 @@ See video preview on [Youtube](https://www.youtube.com/watch?v=78150muVqug).
 # Play the Game
 Try it on [itch.io](https://molchin.itch.io/littletrip).
 
-------
 
-## Acknowledgments
+
+------
+# Acknowledgments
 
 Special thanks to the following for providing free assets that helped make this game possible:
 
