@@ -20,7 +20,7 @@ Special thanks to the following for providing free assets that helped make this 
 - **[Chris' Tutorials]**: For the [Learn How to Make a 2D Platformer in Unity 2022 - FULL GAMEDEV COURSE!](https://www.youtube.com/watch?v=oxiPWg8cdRM). 
 - **[ansimuz]**: For the [SunnyLand](https://ansimuz.itch.io/sunny-land-pixel-game-art).
 - **[SeethingSwarm]**: For the [CatSet](https://seethingswarm.itch.io/catset).
-- **[Toby Fox]**: Music from the Undertale Original Soundtrack, composed by Toby Fox. All rights to the music are owned by the respective copyright holders.
+- **[Toby Fox]**: Music from the Undertale Soundtrack, composed by Toby Fox. All rights to the music are owned by the respective copyright holders.
 - **[leohpaz]**: For the [RPG Essentials Sound Effects - FREE!](https://assetstore.unity.com/packages/audio/sound-fx/rpg-essentials-sound-effects-free-227708).
 
 Your generosity and talent have greatly contributed to this project, and for that, I am truly grateful.
