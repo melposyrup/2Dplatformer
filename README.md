@@ -1,10 +1,14 @@
 # Description
-
 This is a 2D platformer game featuring a kitty who runs, grabs walls, and jumps to find a way out of a cave. You can either avoid enemies or attack them to ensure your safety. The game is currently in development. Upcoming features include additional types of enemies and enhanced enemy AI.
 
 # Dependencies
-
 Unity 2021.3.19f1
+
+# Video Preview
+See video preview on [Youtube](https://www.youtube.com/watch?v=78150muVqug).
+
+# Play the Game
+Try it on [itch.io](https://molchin.itch.io/littletrip).
 
 ------
 
