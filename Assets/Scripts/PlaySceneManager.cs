@@ -9,6 +9,8 @@ using UnityEngine.XR;
 
 public class PlaySceneManager : MonoBehaviour
 {
+	PlayerInput CameraInput;
+
 	public GameObject player;
 	Rigidbody2D playerRb;
 	PlayerInput playerInput;
@@ -37,6 +39,8 @@ public class PlaySceneManager : MonoBehaviour
 	{
 		Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
 
+		CameraInput= GetComponent<PlayerInput>();
+
 		player = GameObject.FindWithTag("Player");
 		playerRb = player.GetComponent<Rigidbody2D>();
 		playerInput = player.GetComponent<PlayerInput>();
@@ -53,6 +57,7 @@ public class PlaySceneManager : MonoBehaviour
 	}
 	private void Start()
 	{
+		CameraInput.enabled = false;
 		StartCoroutine(movePlayer());
 		fadeLayerFading.SetAlpha(1f);
 		fadeLayerFading.StartFadeOut();
@@ -141,6 +146,8 @@ public class PlaySceneManager : MonoBehaviour
 		// enable Thanks component
 		thanks.SetActive(true);
 
+		// press Enter back to TitleScene
+		CameraInput.enabled = true;
 	}
 
 	public void CheckSaveData(GameObject lastSavePoint)
@@ -222,4 +229,30 @@ public class PlaySceneManager : MonoBehaviour
 		if (openingDetection) { openingDetection.GetComponent<BoxCollider2D>().enabled = false; }
 	}
 
+	public void SceneChange(InputAction.CallbackContext context)
+	{
+		if (context.started)
+		{
+			SceneManager.LoadScene("TitleScene");
+		}
+	}
+
+	public void Exit(InputAction.CallbackContext context)
+	{
+		if (context.started)
+		{
+
+#if (UNITY_EDITOR || DEVELOPMENT_BUILD)
+			Debug.Log(this.name + ":" + this.GetType() + ":" + System.Reflection.MethodBase.GetCurrentMethod().Name);
+#endif
+
+#if (UNITY_EDITOR)
+			UnityEditor.EditorApplication.isPlaying = false;
+#elif (UNITY_STANDALONE)
+			Application.Quit();
+#elif (UNITY_WEBGL)
+			SceneManager.LoadScene("QuitScene");
+#endif
+		}
+	}
 }

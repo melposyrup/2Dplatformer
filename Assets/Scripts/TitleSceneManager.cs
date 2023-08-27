@@ -61,8 +61,6 @@ public class TitleSceneManager : MonoBehaviour
 			StartCoroutine(movePlayer());
 		}
 
-		if (Input.GetKeyDown(KeyCode.Escape)) { Exit(); }
-
 	}
 
 	private System.Collections.IEnumerator movePlayer()
@@ -88,21 +86,22 @@ public class TitleSceneManager : MonoBehaviour
 		SceneManager.LoadScene("PlayScene");
 	}
 
-	public void Exit()
+	public void Exit(InputAction.CallbackContext context)
 	{
+		if (context.started)
+		{
 
 #if (UNITY_EDITOR || DEVELOPMENT_BUILD)
-		Debug.Log(this.name + ":" + this.GetType() + ":" + System.Reflection.MethodBase.GetCurrentMethod().Name);
+			Debug.Log(this.name + ":" + this.GetType() + ":" + System.Reflection.MethodBase.GetCurrentMethod().Name);
 #endif
 
 #if (UNITY_EDITOR)
-		UnityEditor.EditorApplication.isPlaying = false;
+			UnityEditor.EditorApplication.isPlaying = false;
 #elif (UNITY_STANDALONE)
 			Application.Quit();
 #elif (UNITY_WEBGL)
 			SceneManager.LoadScene("QuitScene");
 #endif
-
+		}
 	}
-
 }
