@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class SoundManager : MonoBehaviour
 
 	public static SoundManager Instance { get; private set; }
 
-	private void Awake()
+	private void Start()
 	{
 		if (Instance == null)
 		{
@@ -28,6 +29,17 @@ public class SoundManager : MonoBehaviour
 			DontDestroyOnLoad(gameObject);
 		}
 		else { Destroy(gameObject); }
+
+		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+	private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	{
+		if (scene.name == "QuitScene") { Destroy(gameObject); }
+	}
+
+	private void OnDestroy()
+	{
+		SceneManager.sceneLoaded -= OnSceneLoaded;
 	}
 
 

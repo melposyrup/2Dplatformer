@@ -42,7 +42,7 @@ public class TitleSceneManager : MonoBehaviour
 	private void Start()
 	{
 		fadeLayerFading.SetAlpha(1f);
-		fadeLayerFading.StartFadeOut();
+		fadeLayerFading.StartFadeOut(2f);
 		SoundManager.Instance.PlayBGM(BGMSoundData.BGM.TitleScene);
 	}
 	private void Update()
