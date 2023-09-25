@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.XR;
+using System;
 
 public class PlaySceneManager : MonoBehaviour
 {
@@ -35,11 +36,12 @@ public class PlaySceneManager : MonoBehaviour
 	public GameObject healthBar;
 	public GameObject thanks;
 
+
 	private void Awake()
 	{
 		Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
 
-		CameraInput= GetComponent<PlayerInput>();
+		CameraInput = GetComponent<PlayerInput>();
 
 		player = GameObject.FindWithTag("Player");
 		playerRb = player.GetComponent<Rigidbody2D>();
@@ -54,19 +56,24 @@ public class PlaySceneManager : MonoBehaviour
 		fadeLayerFading = fadeLayerPrefab.GetComponent<FadingAnim>();
 
 		endingDetectionPos = endingDetection.GetComponent<Transform>();
+
+		this.GetComponent<GameClearManager>().enabled = false;
 	}
 	private void Start()
 	{
 		CameraInput.enabled = false;
-		StartCoroutine(movePlayer());
 		fadeLayerFading.SetAlpha(1f);
 		fadeLayerFading.StartFadeOut();
 		loadingFading.SetAlpha(0f);
 		gameOverFading.SetAlpha(0f);
 		SoundManager.Instance.PlayBGM(BGMSoundData.BGM.PlayScene);
 		thanks.SetActive(false);
+		StartCoroutine(movePlayer());
 	}
 
+	/*
+	 * EndingAnimation
+	 */
 	public void EndingAnimation()
 	{
 		StartCoroutine(EndingAnim());
@@ -146,9 +153,15 @@ public class PlaySceneManager : MonoBehaviour
 		// enable Thanks component
 		thanks.SetActive(true);
 
+		this.GetComponent<GameClearManager>().enabled = true;
+
 		// press Enter back to TitleScene
 		CameraInput.enabled = true;
 	}
+
+	/*
+	 * SavePoint
+	 */
 
 	public void CheckSaveData(GameObject lastSavePoint)
 	{
@@ -183,6 +196,10 @@ public class PlaySceneManager : MonoBehaviour
 		SoundManager.Instance.PlaySE(SESoundData.SE.Enter);
 	}
 
+	/*
+	 * GameOver Animation
+	 */
+
 	private IEnumerator GameOver()
 	{
 		gameOverFading.StartFadeIn();
@@ -195,6 +212,9 @@ public class PlaySceneManager : MonoBehaviour
 
 	}
 
+	/*
+	 * OpeningAnimation
+	 */
 	private System.Collections.IEnumerator movePlayer()
 	{
 		if (playerManager) { playerManager.enabled = false; }
@@ -213,10 +233,11 @@ public class PlaySceneManager : MonoBehaviour
 			}
 			yield return null;
 		}
-
-
 	}
 
+	/*
+	 * AirWall Events
+	 */
 	public void PlayerStartUp()
 	{
 		if (playerManager) { playerManager.enabled = true; }
@@ -229,14 +250,9 @@ public class PlaySceneManager : MonoBehaviour
 		if (openingDetection) { openingDetection.GetComponent<BoxCollider2D>().enabled = false; }
 	}
 
-	public void SceneChange(InputAction.CallbackContext context)
-	{
-		if (context.started)
-		{
-			SceneManager.LoadScene("TitleScene");
-		}
-	}
-
+	/*
+	 * Exit
+	 */
 	public void Exit(InputAction.CallbackContext context)
 	{
 		if (context.started)

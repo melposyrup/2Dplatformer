@@ -858,17 +858,6 @@
                     "action": "Escape",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3c54664b-859b-4588-8539-fead68a88edc",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Enter",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         }
